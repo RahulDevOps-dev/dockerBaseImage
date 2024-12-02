@@ -1,0 +1,8 @@
+# Use Debian Slim as the base image
+FROM debian:bullseye-slim
+
+# Set the working directory inside the container
+WORKDIR /app
+
+# Set a default command to run when the container starts
+CMD ["echo", "Hello from Debian Slim!"]
