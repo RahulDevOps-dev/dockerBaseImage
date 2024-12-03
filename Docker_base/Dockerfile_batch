@@ -1,5 +1,49 @@
-# Use BusyBox as the base image
-FROM busybox:latest
+FROM amazoncorretto:17-al2023-jdk
 
-# Set a default command to run when the container starts
-CMD ["echo", "Hello from BusyBox!"]
+# Switch to root user
+
+USER root
+
+#install_mongo_drivers
+
+ADD mongo.repo /etc/yum.repos.d/mongodb-org.repo
+
+#patch_update
+
+WORKDIR /root
+
+
+
+RUN yum update -y && \
+
+    yum install -y cups-libs dbus-glib cairo libXext libSM libXrender libX11 libjpeg openssl xorg-x11-fonts-75dpi xorg-x11-fonts-Type1 procps mongodb-mongosh-shared-openssl3 mongodb-org-tools && \
+
+    rm -rf /var/cache/yum/* && \    
+
+    yum clean all
+
+# Create directory structure
+
+RUN mkdir -p /app/data/project_files/{files,batch,temp,archive} \
+             /app/data/{spellcheck,tomcat_temp,user_profiles}
+        
+#set_PDT
+
+RUN ln -sf /usr/share/zoneinfo/PST8PDT /etc/localtime
+
+#newrelic
+
+RUN mkdir -p /usr/local/newrelic
+
+ADD ./newrelic/newrelic.jar /usr/local/newrelic/newrelic.jar
+
+# Deploy application
+
+RUN mkdir -p /rfpserver/rfpserver
+
+COPY deploy/*.properties deploy/*.xml /rfpserver/rfpserver/WEB-INF/classes/
+
+
+#setting_entrypoint_as_shell;can_be_overridden_via_k8s
+
+ENTRYPOINT ["/bin/sh"]
