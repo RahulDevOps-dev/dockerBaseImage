@@ -1,10 +1,40 @@
-# Use Ubuntu as the base image
-FROM ubuntu:20.04
+# syntax=docker/dockerfile:1
 
-# Set the working directory inside the container
-WORKDIR /app
+FROM amazoncorretto:17-al2023-jdk
 
-# Set a default command to run when the container starts
-CMD ["echo", "Hello from Ubuntu Minimal!"]
+# Switch to root user
+USER root
 
+#install_mongo_drivers
 
+ADD mongo.repo /etc/yum.repos.d/mongodb-org.repo
+
+# Set the working directory
+
+WORKDIR /root
+
+#install mongo drivers
+
+# Install required packages and MongoDB shell/tools in a single RUN command
+RUN yum update -y && \
+    yum install -y \
+        procps \
+        xorg-x11-fonts-75dpi \
+        xorg-x11-fonts-Type1 \
+        mongodb-mongosh-shared-openssl3 \
+        mongodb-org-tools && \
+    yum clean all && \
+    rm -rf /var/cache/yum
+
+RUN ln -sf /usr/share/zoneinfo/PST8PDT /etc/localtime
+
+#newrelic
+
+RUN mkdir -p /usr/local/newrelic
+
+ADD ./newrelic/newrelic.jar /usr/local/newrelic/newrelic.jar
+
+#install_packages
+#RUN yum -y install xorg-x11-fonts-75dpi xorg-x11-fonts-Type1 -y 
+
+ENTRYPOINT ["/bin/sh"]
