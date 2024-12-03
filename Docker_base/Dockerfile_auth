@@ -1,9 +1,31 @@
-# Use Alpine Linux as the base image
-FROM alpine:latest
+# syntax=docker/dockerfile:1
 
-# Set a default command to run when the container starts
-CMD ["echo", "Hello from Alpine!"]
+FROM amazoncorretto:17-al2023-jdk
 
+# Switch to root user
+USER root
 
-#checking update
+# Set the working directory
+WORKDIR /root
 
+# Update the package repository and install required packages
+RUN yum update -y && \
+    yum install -y \
+    procps \
+    xorg-x11-fonts-75dpi \
+    xorg-x11-fonts-Type1 && \
+    yum clean all && \
+    rm -rf /var/cache/yum
+
+RUN ln -sf /usr/share/zoneinfo/PST8PDT /etc/localtime
+
+#newrelic
+
+RUN mkdir -p /usr/local/newrelic
+
+ADD ./newrelic/newrelic.jar /usr/local/newrelic/newrelic.jar
+
+#install_packages
+#RUN yum -y install xorg-x11-fonts-75dpi xorg-x11-fonts-Type1 -y 
+
+ENTRYPOINT ["/bin/sh"]
