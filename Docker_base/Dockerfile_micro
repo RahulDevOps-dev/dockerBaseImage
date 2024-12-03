@@ -1,8 +1,33 @@
-# Use Debian Slim as the base image
-FROM debian:bullseye-slim
+# syntax=docker/dockerfile:1
 
-# Set the working directory inside the container
-WORKDIR /app
+FROM amazoncorretto:17-al2023-jdk
 
-# Set a default command to run when the container starts
-CMD ["echo", "Hello from Debian Slim!"]
+# Switch to root user
+USER root
+
+# Set the working directory
+WORKDIR /root
+
+# Update the package repository and install required packages
+RUN yum update -y && \
+    yum install -y \
+    procps \
+    xorg-x11-fonts-75dpi \
+    xorg-x11-fonts-Type1 && \
+    yum clean all && \
+    rm -rf /var/cache/yum
+
+RUN ln -sf /usr/share/zoneinfo/PST8PDT /etc/localtime
+
+#newrelic
+
+RUN mkdir -p /usr/local/newrelic
+
+ADD ./newrelic/newrelic.jar /usr/local/newrelic/newrelic.jar
+
+#install_packages
+#RUN yum -y install xorg-x11-fonts-75dpi xorg-x11-fonts-Type1 -y 
+
+ENTRYPOINT ["/bin/sh"]
+
+                                              
