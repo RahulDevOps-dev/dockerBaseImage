@@ -1,3 +1,4 @@
+# syntax=docker/dockerfile:1
 
 FROM amazoncorretto:17-al2023-jdk
 
@@ -36,7 +37,7 @@ RUN ln -sf /usr/share/zoneinfo/PST8PDT /etc/localtime
 
 RUN mkdir -p /usr/local/newrelic
 
-ADD newrelic.jar /usr/local/newrelic/newrelic.jar
+ADD ./newrelic/newrelic.jar /usr/local/newrelic/newrelic.jar
 
 # Deploy application
 
