@@ -35,7 +35,7 @@ RUN ln -sf /usr/share/zoneinfo/PST8PDT /etc/localtime
 
 RUN mkdir -p /usr/local/newrelic
 
-ADD ./newrelic/newrelic.jar /usr/local/newrelic/newrelic.jar
+ADD newrelic.jar /usr/local/newrelic/newrelic.jar
 
 # Deploy application
 
