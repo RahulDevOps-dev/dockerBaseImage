@@ -32,7 +32,7 @@ RUN ln -sf /usr/share/zoneinfo/PST8PDT /etc/localtime
 
 RUN mkdir -p /usr/local/newrelic
 
-ADD newrelic.jar /usr/local/newrelic/newrelic.jar
+ADD ./newrelic/newrelic.jar /usr/local/newrelic/newrelic.jar
 
 #install_packages
 #RUN yum -y install xorg-x11-fonts-75dpi xorg-x11-fonts-Type1 -y 
