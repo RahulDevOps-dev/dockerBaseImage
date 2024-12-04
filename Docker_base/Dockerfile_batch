@@ -1,3 +1,4 @@
+
 FROM amazoncorretto:17-al2023-jdk
 
 # Switch to root user
@@ -41,7 +42,7 @@ ADD newrelic.jar /usr/local/newrelic/newrelic.jar
 
 RUN mkdir -p /rfpserver/rfpserver
 
-COPY deploy/*.properties deploy/*.xml /rfpserver/rfpserver/WEB-INF/classes/
+#COPY deploy/*.properties deploy/*.xml /rfpserver/rfpserver/WEB-INF/classes/
 
 
 #setting_entrypoint_as_shell;can_be_overridden_via_k8s
